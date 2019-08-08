@@ -13,3 +13,7 @@
         </div>
     </div>
 <?php } ?>
+
+<div class="pagination-links">
+    <?php echo $this->pagination->create_links(); ?>
+</div>
