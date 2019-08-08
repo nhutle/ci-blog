@@ -19,9 +19,15 @@
                         <li><a href="<?php echo base_url(); ?>categories">Categories</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <?php if (!$this->session->userdata('logged_in')) { ?>
+                        <li><a href="<?php echo base_url(); ?>users/login">Login</a></li>
                         <li><a href="<?php echo base_url(); ?>users/register">Register</a></li>
+                        <?php } ?>
                         <li><a href="<?php echo base_url(); ?>posts/create">Create Post</a></li>
                         <li><a href="<?php echo base_url(); ?>categories/create">Create Category</a></li>
+                        <?php if ($this->session->userdata('logged_in')) { ?>
+                        <li><a href="<?php echo base_url(); ?>users/logout">Logout</a></li>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>
@@ -29,6 +35,18 @@
         <div class="container">
             <?php if ($this->session->flashdata('user_registered')) { ?>
                 <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_registered').'</p>'?>
+            <?php } ?>
+
+            <?php if ($this->session->flashdata('user_logged_in')) { ?>
+                <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_logged_in').'</p>'?>
+            <?php } ?>
+
+            <?php if ($this->session->flashdata('login_failed')) { ?>
+                <?php echo '<p class="alert alert-danger">'.$this->session->flashdata('login_failed').'</p>'?>
+            <?php } ?>
+
+            <?php if ($this->session->flashdata('user_logged_out')) { ?>
+                <?php echo '<p class="alert alert-success">'.$this->session->flashdata('user_logged_out').'</p>'?>
             <?php } ?>
 
             <?php if ($this->session->flashdata('post_created')) { ?>

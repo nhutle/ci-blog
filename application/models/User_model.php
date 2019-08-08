@@ -16,6 +16,19 @@
             return $this->db->insert('users', $data);
         }
 
+        public function login($username, $enc_password) {
+            $this->db->where('username', $username);
+            $this->db->where('password', $enc_password);
+
+            $result = $this->db->get('users');
+
+            if ($result->num_rows() == 1) {
+                return $result->row(0)->id;
+            } else {
+                return false;
+            }
+        }
+
         public function check_username_exists($username) {
             $query = $this->db->get_where('users', array('username' => $username));
 

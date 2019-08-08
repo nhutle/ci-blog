@@ -27,6 +27,11 @@ class Posts extends CI_Controller {
     }
 
     public function create() {
+        // Check login:
+        if (!$this->session->userdata('logged_in')) {
+            redirect('users/login');
+        }
+
         $data['title'] = 'Create Post';
         $data['categories'] = $this->post_model->get_categories();
 
@@ -42,8 +47,8 @@ class Posts extends CI_Controller {
             $config['upload_path'] = './assets/images/posts';
             $config['allowed_types'] = 'gif|jpg|png';
             $config['max_size'] = '2048';
-            $config['max_width'] = '500';
-            $config['max_height'] = '500';
+            $config['max_width'] = '2000';
+            $config['max_height'] = '2000';
 
             $this->load->library('upload', $config);
 
@@ -65,6 +70,11 @@ class Posts extends CI_Controller {
     }
 
     public function delete($id) {
+        // Check login:
+        if (!$this->session->userdata('logged_in')) {
+            redirect('users/login');
+        }
+
         $this->post_model->delete_post($id);
 
         // Set message:
@@ -74,7 +84,18 @@ class Posts extends CI_Controller {
     }
 
     public function edit($slug) {
+        // Check login:
+        if (!$this->session->userdata('logged_in')) {
+            redirect('users/login');
+        }
+
         $data['post'] = $this->post_model->get_posts($slug);
+
+        // Check user:
+        if ($this->session->userdata('user_id') != $data['post']['user_id']) {
+            redirect('posts');
+        }
+
         $data['categories'] = $this->category_model->get_categories();
 
         if (empty($data['post'])) {
@@ -89,6 +110,11 @@ class Posts extends CI_Controller {
     }
 
     public function update() {
+        // Check login:
+        if (!$this->session->userdata('logged_in')) {
+            redirect('users/login');
+        }
+
         $this->post_model->update_post();
 
         // Set message:
